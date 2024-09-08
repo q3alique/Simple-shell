@@ -17,7 +17,7 @@ The script supports PowerShell payloads with optional Base64 encoding for bypass
 
 Clone this repository and install the required dependencies:
 ```bash
-git clone https://github.com/your-repo/simple-shell.git
+git clone https://github.com/q3alique/simple-shell.git
 cd simple-shell
 ```
 
