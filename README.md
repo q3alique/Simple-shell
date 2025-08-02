@@ -1,17 +1,22 @@
 # Simple-Shell Script
 
-This script generates reverse shell commands for multiple programming languages, making it easier to quickly create reverse shells for penetration testing or exploit development.
+This utility generates reverse-shell command strings for multiple platforms and languages. It’s intended for authorized security testing, training in controlled labs, and research on systems you own or are permitted to test.
+
+>Legal & Ethical Notice
+Use only on systems where you have explicit permission. You are responsible for complying with all applicable laws and policies.
 
 ## Description
 
-The reverse shell generator provides support for a wide variety of shells, including Bash, Python (both Linux and Windows versions), Perl, PHP (Linux and Windows versions), Java, and PowerShell. It allows users to easily generate a reverse shell payload for their target platform.
+The reverse shell generator provides support for a wide variety of shells, including Bash, Python (both Linux and Windows versions), Perl, PHP (Linux and Windows versions), Java, Go, R, AWK, and PowerShell.
+It allows users to easily generate a reverse shell payload for their target platform, with various levels of obfuscation available for PowerShell payloads.
 
-The script supports PowerShell payloads with optional Base64 encoding for bypassing security restrictions on certain systems.
+The script supports PowerShell payloads with optional Base64 encoding and multiple obfuscation levels to bypass detection and security restrictions.
 
 ### Features:
-- Generates reverse shell commands for various platforms.
-- Supports PowerShell reverse shells with Base64 encoding for obfuscation.
-- Lists available shell types with descriptions to aid in selecting the most suitable option.
+- Generates reverse-shell payload strings for Linux/Unix and Windows targets.
+- Multiple languages and tools supported (Bash, Python, PHP, Perl, Java, AWK, Go, R, PowerShell).
+- PowerShell variants include Base64-encoded output for compatibility and transport safety.
+- `--list-shells` option prints all available types with brief descriptions.
 
 ## Installation
 
@@ -49,19 +54,23 @@ python simple-shell.py --list-shells
 
 ## Supported Shell Types and Descriptions:
 
-- **Bash**: Uses Bash's built-in features to create a reverse shell. Commonly used on Linux systems.
-- **Python (Linux)**: Leverages Python's socket and subprocess libraries to establish a reverse shell on Unix-based systems.
-- **Python (Windows)**: Uses Python to interact with `cmd.exe` for reverse shell functionality on Windows systems.
-- **Perl**: A lightweight reverse shell option using Perl, often found on Unix-based systems.
-- **PHP (Linux)**: Uses PHP's `fsockopen()` to create a reverse shell. Commonly used for web-based exploits on Linux servers.
-- **PHP (Windows)**: A PHP-based reverse shell for Windows that spawns `cmd.exe`.
-- **Java**: Uses Java's `Runtime` and `Process` APIs to open a reverse shell. Requires Java to be installed on the target system.
-- **AWK**: A minimalist reverse shell for Unix-based systems using AWK.
-- **Go**: Creates and runs a Go program that establishes a reverse shell. Useful for systems with Go installed.
-- **R**: Utilizes R's `socketConnection()` to open a reverse shell. Suitable for data science environments.
-- **PowerShell 1**: A standard PowerShell reverse shell that communicates over TCP using PowerShell's `TCPClient`.
-- **PowerShell 2**: Similar to PowerShell 1 but with more controlled input/output handling via `StreamWriter`.
-- **PowerShell 3**: A PowerShell reverse shell with a Base64-encoded payload, commonly used for bypassing security restrictions.
-- **PowerShell 4**: A lightweight PowerShell reverse shell with a minimal encoded payload.
+- **bash**: Bash reverse shell using TCP sockets and file descriptors (Linux/Unix).
+- **python-linux**: Python reverse shell for Linux using the socket and subprocess modules.
+- **python-windows**: Python reverse shell for Windows using socket and subprocess with full stdin/stdout redirection.
+- **php-linux**: PHP reverse shell for Linux using fsockopen and /bin/sh.
+- **php-windows**: PHP reverse shell for Windows using fsockopen and proc_open with cmd.exe.
+- **perl**: Perl reverse shell leveraging low-level socket functions to execute /bin/sh.
+- **java**: Java reverse shell spawning a bash process through Runtime.exec (must be embedded in a Java class).
+- **awk**: Awk reverse shell using TCP socket and interactive loop to execute commands.
+- **go**: Go reverse shell — Uses Golang to compile and run a reverse shell. Requires Go to be installed on the target system. Useful for quickly creating executable reverse shells.
+- **r**: R reverse shell executing bash through a system() call (Linux).
+- **powershell1**: Classic PowerShell reverse shell using New-Object and GetStream to establish a TCP connection.
+- **powershell2**: Compact version of PowerShell reverse shell with shorter syntax but same functionality.
+- **powershell3**: PowerShell reverse shell encoded in Base64 (UTF-16LE) to bypass command-line detection.
+- **powershell-obf**: PowerShell reverse shell with randomized variables + Base64 encoding to evade detection.
+- **powershell-obf2**: Heavily obfuscated PowerShell reverse shell using charcode array and decoding at runtime, then Base64 encoded for stealth.
 
-
+## Troubleshooting
+- **Nothing returns / connection refused**: Confirm your listener (e.g., nc -lvnp <port>) is running and reachable from the target, and that host firewalls allow outbound traffic to the listener.
+- **PowerShell errors about policy**: Run in an approved test environment and use proper administrative/organizational procedures.
+- **Copy/paste issues**: Encoded variants help avoid newline/quoting problems. Prefer the Base64 options (powershell3, powershell-obf, powershell-obf2) when transporting via terminals or scripts that mangle characters.
